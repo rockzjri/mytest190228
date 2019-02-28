@@ -1,0 +1,6 @@
+cn\itrock\ssm\dao\PermissionDao.class
+cn\itrock\ssm\dao\ProductDao.class
+cn\itrock\ssm\dao\UserDao.class
+cn\itrock\ssm\dao\RoleDao.class
+cn\itrock\ssm\dao\SysLogDao.class
+cn\itrock\ssm\dao\OrdersDao.class

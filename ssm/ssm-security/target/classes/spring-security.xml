@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--1.配置用户认证信息-->
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="MyUserDetailService">
+            <!--<security:user-service >-->
+
+                <!--配置用户信息，说明：
+                      name：用户名称
+                      password：用户密码。细节：指定加密的方式，{noop}是不加密的。
+                      authorities：角色列表-->
+                <!--<security:user name="user" authorities="ROLE_USER" password="{noop}123456"/>-->
+                <!--<security:user name="admin" authorities="ROLE_ADMIN" password="{noop}123456"/>-->
+            <!--</security:user-service>-->
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <bean id="MyUserDetailService" class="cn.itrock.security.controller.MyUserDetailService"/>
+
+
+    <!--2.配置用户授权信息,说明：
+     auto-config：开启自动配置
+     use-expressions：关闭SpEL表达式-->
+    <security:http auto-config="true" use-expressions="false">
+
+        <!--配置权限url规则，说明：
+           pattern：url规则，可以使用通配符*
+           access：角色列表。细节：默认情况下角色的名称必须以ROLE_开头-->
+        <security:intercept-url pattern="/welcome**" access="ROLE_USER"/>
+        <security:intercept-url pattern="/admin**" access="ROLE_ADMIN"/>
+        <!--配置登录功能,说明：
+                    login-page：登录页面
+                    default-target-url：登录成功的跳转的url
+                    authentication-failure-url：登录失败跳转的页面
+
+                    细节：
+                        1.默认下请求的url，必须是/login
+                        2.默认下请求的用户名称和密码必须是：username，password
+
+                        3.通过login-processing-url，修改默认的请求地址
+                            login-processing-url="/myLogin"
+                        4.通过username-parameter和password-parameter修改默认的用户名称和密码
+                -->
+        <security:form-login
+                login-page="/pages/login.jsp"
+                default-target-url="/index.jsp"
+                authentication-failure-forward-url="/pages/error.jsp"/>
+
+        <!--配置退出,说明：
+               logout-success-url：退出成功以后跳转的url
+               invalidate-session：是否销毁session
+           -->
+        <security:logout logout-success-url="/pages/login.jsp" invalidate-session="true"/>
+
+        <!--配置关闭csrf请求伪造-->
+        <security:csrf disabled="true"/>
+
+
+        <!--<security:form-login-->
+                <!--login-page="/pages/login.jsp"-->
+                <!--default-target-url="/index.jsp"-->
+                <!--authentication-failure-url="/pages/error.jsp"/>-->
+
+        <!--&lt;!&ndash;配置退出,说明：-->
+            <!--logout-success-url：退出成功以后跳转的url-->
+            <!--invalidate-session：是否销毁session-->
+        <!--&ndash;&gt;-->
+        <!--<security:logout logout-success-url="/pages/login.jsp" invalidate-session="true"/>-->
+
+        <!--&lt;!&ndash;配置关闭csrf请求伪造&ndash;&gt;-->
+        <!--<security:csrf disabled="true"/>-->
+
+    </security:http>
+
+</beans>

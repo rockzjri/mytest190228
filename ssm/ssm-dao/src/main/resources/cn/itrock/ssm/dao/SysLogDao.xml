@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itrock.ssm.dao.SysLogDao">
+
+    <!--查询全部日志,并根据访问时间降序排列-->
+    <select id="findAllSysLogs" resultType="SysLog">
+        select *from sys_log order by visitTime desc
+    </select>
+
+    <insert id="saveSysLog" parameterType="syslog">
+        insert into sys_log (visitTime,username,ip,method) values(#{visitTime},#{username},#{ip},#{method})
+    </insert>
+
+
+</mapper>

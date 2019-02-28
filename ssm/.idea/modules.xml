@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ssm-dao/ssm-dao.iml" filepath="$PROJECT_DIR$/ssm-dao/ssm-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm-day03-01pageHelper/ssm-day03-01pageHelper.iml" filepath="$PROJECT_DIR$/ssm-day03-01pageHelper/ssm-day03-01pageHelper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm-domain/ssm-domain.iml" filepath="$PROJECT_DIR$/ssm-domain/ssm-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm-main/ssm-main.iml" filepath="$PROJECT_DIR$/ssm-main/ssm-main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm-parent/ssm-parent.iml" filepath="$PROJECT_DIR$/ssm-parent/ssm-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm-security/ssm-security.iml" filepath="$PROJECT_DIR$/ssm-security/ssm-security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm-service/ssm-service.iml" filepath="$PROJECT_DIR$/ssm-service/ssm-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm-web/ssm-web.iml" filepath="$PROJECT_DIR$/ssm-web/ssm-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm-day03-security/ssmday03security.iml" filepath="$PROJECT_DIR$/ssm-day03-security/ssmday03security.iml" />
+    </modules>
+  </component>
+</project>

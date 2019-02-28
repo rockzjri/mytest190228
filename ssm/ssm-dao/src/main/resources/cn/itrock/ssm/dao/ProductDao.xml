@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itrock.ssm.dao.ProductDao">
+
+    <!--查询全部商品列表数据-->
+    <select id="findAllProducts" resultType="product">
+        select * from product
+    </select>
+
+    <!--添加商品-->
+    <insert id="saveProduct" parameterType="product">
+      INSERT INTO product (
+	productNum,
+	productName,
+	cityName,
+	DepartureTime,
+	productPrice,
+	productDesc,
+	productStatus
+)VALUES(
+#{productNum},
+#{productName},
+#{cityName},
+#{DepartureTime},
+#{productPrice},
+#{productDesc},
+#{productStatus} );
+
+    </insert>
+
+    <!-- 根据id修改用户列表-->
+    <select id="findProductById" parameterType="long" resultType="product">
+        select *from product where id=#{id}
+    </select>
+
+    <update id="updateProduct" parameterType="product">
+    UPDATE product p
+    SET p.productName = #{productName},
+     p.cityName = #{cityName},
+     p.DepartureTime = #{DepartureTime},
+     p.productPrice = #{productPrice},
+     p.productDesc = #{productDesc},
+     p.productStatus = #{productStatus}
+    WHERE
+        p.id =#{id}
+
+    </update>
+
+    <delete id="delProduct" parameterType="long">
+        DELETE from product where id=#{id}
+    </delete>
+</mapper>

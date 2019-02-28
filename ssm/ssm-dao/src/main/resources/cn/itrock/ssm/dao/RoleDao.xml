@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itrock.ssm.dao.RoleDao">
+
+    <!--查询角色list-->
+    <select id="findAllRoles" resultType="role">
+    select * from role
+</select>
+
+    <!--添加新角色-->
+    <insert id="saveRole" parameterType="role">
+        insert into role (roleName,roleDesc) values(#{roleName},#{roleDesc})
+    </insert>
+
+    <!--& 分配权限 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+    <resultMap id="roleandpermissionmap" type="role">
+        <id column="id" property="id"/>
+        <result column="roleName" property="roleName"/>
+        <result column="roleDesc" property="roleDesc"/>
+        <!--配置一对多关系,说明：property：要映射的属性名称 javaType：要映射的属性类型 ofType:集合中存放的类型-->
+        <collection property="permissionList" ofType="permission" javaType="List">
+            <id column="pid" property="id"/>
+            <result column="permissionName" property="permissionName"/>
+            <result column="url" property="url"/>
+        </collection>
+    </resultMap>
+    <!--根据roleid查询-->
+    <select id="findRoleAndPermissionsById" resultMap="roleandpermissionmap" parameterType="long">
+ SELECT
+    r.`id`,
+    r.`roleDesc`,
+    r.`roleName`,
+    p.id pid,
+    p.permissionName,
+    p.url
+    FROM role r
+    LEFT JOIN role_permission rp ON rp.`roleId`=r.`id`
+    LEFT JOIN permission p ON rp.`permissionId`=p.`id`
+    WHERE r.id=#{id}
+    </select>
+
+    <!--//查询所有Permission-->
+    <!--List<Permission> findAllPermissions();-->
+    <select id="findAllPermissions" resultType="Permission" >
+        select * from permission
+    </select>
+
+    <!--//删除旧权限配置关系byid-->
+    <!--void delRoleAndPermission(Long roleId);-->
+    <delete id="delRoleAndPermission" parameterType="long">
+        delete from role_permission where roleId=#{roleId}
+    </delete>
+
+    <!--//添加新的权限配置关系-->
+    <!--void addRoleAndPermission(Long[] RoleIdAndPermissionId);-->
+    <insert id="addRoleAndPermission" parameterType="list">
+        insert into role_permission (roleId,permissionId) values
+        <foreach collection="array" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </insert>
+
+
+</mapper>
