@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="customerService" class="cn.itcast.service.impl.CustomerServiceImpl"></bean>
+    <bean id="logAdvice" class="cn.itcast.service.asvice.LogAdvice"></bean>
+
+    <aop:config>
+        <aop:aspect id="logAdvice" ref="logAdvice">
+            <!--<aop:before method="beforeLog" pointcut-ref="pt1"></aop:before>-->
+
+            <!--<aop:after-returning method="afterReturningLog" pointcut-ref="pt1"></aop:after-returning>-->
+
+            <!--<aop:after-throwing method="afterThrowingLog" pointcut-ref="pt1"></aop:after-throwing>-->
+
+
+            <!--<aop:after method="afterLog" pointcut-ref="pt1"></aop:after>-->
+            <!---->
+
+            <aop:around method="aroundLog" pointcut-ref="pt1"></aop:around>
+
+            <aop:pointcut id="pt1" expression="execution(* cn.itcast..*.*(..))"></aop:pointcut>
+        </aop:aspect>
+
+
+    </aop:config>
+
+
+</beans>

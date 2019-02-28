@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="customerService" class="cn.itheima.service.impl.CustomerServiceImpl"/>
+
+    <!--配置日志通知advice-->
+    <bean id="logAdvice" class="cn.itheima.advice.LogAdvice"></bean>
+
+    <aop:config>
+        <aop:aspect id="logAdvice" ref="logAdvice">
+            <!--第三步：通过aop:before配置前置通知，说明：
+                       method：指定通知方法的名称
+                       pointcut-ref：指定切入点表达式的id
+                   -->
+            <aop:before method="printLog" pointcut-ref="pt1"></aop:before>
+
+            <!--第四步：通过aop:pointcut配置切入点表达式，说明：
+                id：给切入点表达式取一个唯一标识名称
+                expression：指定切入点表达式
+                表达式组成：访问修饰符 返回值 包名称 类名称 方法名称 (参数列表)
+            -->
+            <aop:pointcut id="pt1"
+                          expression="execution(public void cn.itheima.service.impl.CustomerServiceImpl.saveCustomer())"></aop:pointcut>
+
+
+
+        </aop:aspect>
+    </aop:config>
+
+</beans>

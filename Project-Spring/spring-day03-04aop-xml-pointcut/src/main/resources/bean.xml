@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--配置客户service-->
+    <bean id="customerService" class="cn.itheima.service.impl.CustomerServiceImpl"></bean>
+
+    <!--配置日志通知advice-->
+    <bean id="logAdvice" class="cn.itheima.advice.LogAdvice"></bean>
+
+    <!--切入点表达式演化-->
+    <aop:config>
+        <aop:aspect id="logAspect" ref="logAdvice">
+            <aop:before method="printLog"  pointcut-ref="pt1"></aop:before>
+
+            <!--切入点表达式演化，说明：
+                切入点表达式组成：
+                    访问修饰符   返回值  包名称  类名称  方法名称  （参数列表）
+                全匹配方式：
+                    public void cn.itheima.service.impl.CustomerServiceImpl.saveCustomer()
+                访问修饰符可以省略：
+                    void cn.itheima.service.impl.CustomerServiceImpl.saveCustomer())
+                返回值可以使用通配符*：
+                    * cn.itheima.service.impl.CustomerServiceImpl.saveCustomer())
+                包名称可以使用通配符*（有多少级包，就需要多少个*）：
+                    * *.*.*.*.CustomerServiceImpl.saveCustomer()
+                包名称可以使用..（表示当前包和子包）：
+                    * *..CustomerServiceImpl.saveCustomer())
+                类名称可以使用通配符*：
+                    * *..*.saveCustomer()
+                方法名称可以使用通配符*：
+                    * *..*.*()
+                参数列表可以使用通配符*（要求必须要有参数）：
+                    * *..*.*(*)
+                 参数列表可以使用..（有无参数均可）：
+                    * *..*.*(..)
+
+                在实际项目中使用的表达式：
+                    * cn.itheima.service..*.*(..)
+
+
+            -->
+            <aop:pointcut id="pt1"
+                          expression="execution(* cn.itheima.service..*.*(..))"></aop:pointcut>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
