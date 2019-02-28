@@ -1,8 +1,0 @@
-cn\itrock\ssm\aop\LogAop.class
-cn\itrock\ssm\controller\ProductController.class
-cn\itrock\ssm\controller\OrdersController.class
-cn\itrock\ssm\controller\PermissionController.class
-cn\itrock\ssm\controller\RoleController.class
-cn\itrock\ssm\controller\SyslogController.class
-cn\itrock\ssm\controller\UserController.class
-cn\itrock\ssm\converter\DateConverter.class
