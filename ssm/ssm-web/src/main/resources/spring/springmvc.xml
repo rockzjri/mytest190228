@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--处理静态资源加载-->
+    <mvc:default-servlet-handler/>
+
+    <!--配置包扫描controller-->
+    <context:component-scan base-package="cn.itrock.ssm"/>
+
+
+    <!--注解驱动方式配置处理器和适配器-->
+    <mvc:annotation-driven conversion-service="conversionService"/>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="cn.itrock.ssm.converter.DateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!--前置公共目录-->
+        <property name="prefix" value="/pages/"/>
+        <!--后置扩展名-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置aop-->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+</beans>

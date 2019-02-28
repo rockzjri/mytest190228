@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itrock.ssm.dao.UserDao">
+
+    <!--查询所有users-->
+    <select id="findAllUsers" resultType="user">
+        select * from user
+    </select>
+
+    <!--添加新user-->
+    <insert id="saveUser" parameterType="user">
+        insert into user (username,password,email,phoneNum,status)
+        values (#{username},#{password},#{email},#{phoneNum},#{status})
+    </insert>
+
+    <!--建立一对多关系的映射关系-->
+    <resultMap id="userRoleResultMap" type="user">
+        <!--配置主键对应关系-->
+        <id column="id" property="id"></id>
+        <!--配置用户的普通字段对应关系-->
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="phoneNum" property="phoneNum"/>
+        <result column="status" property="status"/>
+
+        <!--配置一对多关系,说明：
+           property：要映射的属性名称
+           javaType：要映射的属性类型
+           ofType:集合中存放的类型
+       -->
+        <collection property="roleList" javaType="List" ofType="Role">
+            <!--配置角色的主键字段对应关系-->
+            <id column="roleId" property="id"/>
+            <!--配置角色的普通字段对应关系-->
+            <result column="roleName" property="roleName"/>
+            <result column="roleDesc" property="roleDesc"/>
+
+            <!--配置角色到权限的一对多关系，说明：
+               采用延迟加载的实现方式：
+                   1.select:配置延迟加载要查询的sql语句（名称空间+"."+sql语句Id）
+                   2.column：配置传递参数的字段
+           -->
+            <collection property="permissionList" javaType="List" ofType="Permission"
+                        select="cn.itrock.ssm.dao.UserDao.findPermissionsByRoleId" column="roleId">
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!--根据用户Id查询用户信息-->
+    <select id="findUserById" parameterType="long" resultMap="userRoleResultMap">
+        SELECT
+            u.id,
+            u.username,
+            u.`password`,
+            u.email,
+            u.phoneNum,
+            u.`status`,
+            r.id roleId,
+            r.roleName,
+            r.roleDesc
+        FROM
+            `user` u
+        LEFT JOIN user_role ur ON u.id = ur.userId
+        LEFT JOIN role r ON ur.roleId = r.id
+        WHERE u.id = #{id}
+    </select>
+
+    <!--根据角色Id查询权限信息-->
+    <select id="findPermissionsByRoleId" parameterType="long" resultType="Permission">
+        SELECT
+        p.id,
+        p.permissionName,
+        p.url
+        FROM
+        role_permission rp
+        LEFT JOIN permission p ON rp.permissionId = p.id
+        WHERE
+        rp.roleId = #{roleId}
+    </select>
+
+    <!--user和role之间关系的改善-->
+<!--查询所有role-->
+    <select id="findAllRoles" resultType="role">
+        SELECT *FROM role
+    </select>
+
+    <!--依据Id删除用户-->
+    <delete id="delUserAndRole" parameterType="long">
+        DELETE FROM user_role WHERE userId=#{userId}
+    </delete>
+    <!--添加新关系-->
+    <insert id="addUserToRole" parameterType="long">
+    INSERT INTO user_role(userId,roleId)
+    VALUES
+    <foreach collection="array"  item="id" open="(" close=")" separator=",">
+        #{id}
+    </foreach>
+    </insert>
+    <!--根据用户名查找-->
+    <select id="findUserByName" parameterType="string" resultType="user">
+        select *from user where username=#{username}
+    </select>
+</mapper>
